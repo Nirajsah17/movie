@@ -1,10 +1,55 @@
-import Link from "next/link"
-export default function Home(){
-  return <>
-    <div className="bg-neutral-primary w-1/2 h-screen max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-      <Link href={"/movies"}>
-        <button type="button" className="text-white bg-warning box-border border border-transparent hover:bg-warning-strong focus:ring-4 focus:ring-warning-medium shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none">Explore Movies & Series</button>
-      </Link>
-    </div>
-  </>
+import SearchBar from "./components/SearchBar";
+import MovieCard, { TMDBMovie } from "./components/MovieCard";
+import Carousel from "./components/Carousel";
+import { searchMovies, TredingWeek } from "./actions/movies";
+
+interface PageProps {
+  searchParams: Promise<{ query?: string }>;
+}
+
+export default async function MoviesPage({ searchParams }: PageProps) {
+  const { query } = await searchParams;
+  const searchQuery = query?.trim() || "";
+  let movies: TMDBMovie[] = [];
+  let trendingMoviesWeek = [];
+
+  const tredingWeek = await TredingWeek();
+  trendingMoviesWeek = tredingWeek.results.map((item: any) => ({
+    id: item.id,
+    src: `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
+    alt: item.title,
+    title: item.title || item.name,
+    description: item.overview,
+    buttonText: "Play",
+    buttonHref: `/watch/${item.id}`,
+    media_type: item.type
+  }));
+
+  if(searchQuery){
+    const searchedmovies = await searchMovies(searchQuery);
+    movies = searchedmovies.results.map((item:any)=> ({...item, title: item.title || item.name, poster_path: `https://media.themoviedb.org/t/p/w300_and_h450_face${item.poster_path}`})) || [];
+  }else{
+    movies = tredingWeek.results.map((item:any)=> ({...item, title: item.title || item.name, poster_path: `https://media.themoviedb.org/t/p/w300_and_h450_face${item.poster_path}`})) || [];
+  }
+
+  console.log(tredingWeek.results);
+  console.log({movies})
+
+  return (
+    <main className="mx-auto p-6">
+      {trendingMoviesWeek.length && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
+      <SearchBar />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 mt-10">
+        {movies.map((movie) => (
+          <MovieCard movie={movie} key={movie.id}/>
+        ))}
+      </div>
+
+      {searchQuery && movies.length === 0 && (
+        <p className="text-center text-body mt-12">
+          No cinematic matches found for "<span className="font-semibold">{searchQuery}</span>"
+        </p>
+      )}
+    </main>
+  );
 }
