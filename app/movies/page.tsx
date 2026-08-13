@@ -32,9 +32,6 @@ export default async function MoviesPage({ searchParams }: PageProps) {
     movies = tredingWeek.results.map((item:any)=> ({...item, title: item.title || item.name, poster_path: `https://media.themoviedb.org/t/p/w300_and_h450_face${item.poster_path}`})) || [];
   }
 
-  console.log(tredingWeek.results);
-  console.log({movies})
-
   return (
     <main className="mx-auto p-6">
       {trendingMoviesWeek.length && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}

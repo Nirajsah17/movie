@@ -36,7 +36,7 @@ export default async function MovieDetailPage({
     description: data.overview,
     buttonText: "Play",
     media_type: mediaType,
-    buttonHref: `/watch/${id}?type=${mediaType}`,
+    buttonHref: `/watch/${id}?type=${mediaType}&poster_path=${data.backdrop_path}&title=${data.title || data.original_title}`,
   };
 
   return (

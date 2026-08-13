@@ -22,7 +22,6 @@ export default function DownloadLink({ id }: DownloadProps) {
       }
     } catch (err) {
       newTab?.close();
-      console.error("Failed to get movie ID:", err);
     }
   };
 

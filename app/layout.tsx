@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import NavBar from "./components/navbar"
+import NavBar from "./components/Navbar"
+import SessionProvider from "./components/SessionProvider";
+import { InitWatchHistory } from "./components/Avatar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,14 +20,17 @@ export const metadata: Metadata = {
   description: "Watch Movies and shows online",
 };
 
+
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <NavBar />
+        <InitWatchHistory/>
+        <SessionProvider>
+          <NavBar />
           {children}
-        {/* <div className="h-screen bg-gray-900 bg-[url('/bg_netflix.jpg')] bg-cover bg-center">
-        </div>  */}
+        </SessionProvider>
       </body>
     </html>
   );

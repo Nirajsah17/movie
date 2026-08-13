@@ -1,6 +1,8 @@
+import PlayerMessageListener from "@/app/components/PlayerMesageListener";
+
 interface WatchPageProps {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ type?: string, season: string, episode:string }>;
+  searchParams: Promise<{ type: string, season: number, episode:number, poster_path:string, title:string, still_path:string }>;
 }
 
 export default async function WatchMovie({
@@ -9,7 +11,7 @@ export default async function WatchMovie({
 }: WatchPageProps) {
 
   const { id } = await params;
-  const { type, season, episode} = await searchParams;
+  const { type, season, episode, poster_path, still_path} = await searchParams;
 
   const mediaType = type?.toLowerCase() === "tv" ? "tv" : "movie";
 
@@ -19,14 +21,9 @@ export default async function WatchMovie({
       : `https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`;
 
   return (
-    <iframe
-      src={url}
-      width="100%"
-      height="900"
-      frameBorder="0"
-      allowFullScreen
-      className="w-full border-0"
-      title="Video player"
-    />
+    <div className="min-h-screen bg-black">
+      <PlayerMessageListener posterPath={poster_path||still_path} seasonNumber={season} episodeNumber={episode} />
+      <iframe src={url} width="100%" height="900" allowFullScreen className="w-full" title="Video player"/>
+    </div>
   );
 }
