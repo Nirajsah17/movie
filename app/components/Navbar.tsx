@@ -11,22 +11,26 @@ export default async function NavBar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/95 backdrop-blur-md">
-      <div className="mx-auto flex items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center" aria-label="Netflix Home">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
+        {/* Logo */}
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Netflix Home">
           <Image src={NetflixLogo} alt="Netflix Logo" width={110} height={30} priority className="h-7 w-auto"/>
         </Link>
         {!session && (
-          <div>
-            <p className="text-sm text-white">
+          <div className="hidden shrink-0 lg:block">
+            <p className="whitespace-nowrap text-sm text-white">
               <b>New to Netflix?</b>{" "}
-              <span className="text-gray-300">
-                Try 7 days for ₹0.
-              </span>
+              <span className="text-gray-400">Try 7 days for ₹0.</span>
             </p>
           </div>
         )}
-        <SearchBar/>
-        <UserAvatar/>
+
+        <div className="min-w-0 flex-1">
+          <SearchBar />
+        </div>
+        <div className="shrink-0">
+          <UserAvatar />
+        </div>
       </div>
     </nav>
   );
