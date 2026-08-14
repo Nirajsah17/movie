@@ -20,9 +20,25 @@ export default async function WatchMovie({
       : `https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`;
 
   return (
-    <div className="min-h-screen bg-black">
-      <PlayerMessageListener posterPath={poster_path||still_path} seasonNumber={season} episodeNumber={episode} title={title} />
-      <iframe src={url} width="100%" height="900" allowFullScreen className="w-full" title="Video player"/>
+    <div className="min-h-screen w-full min-w-0 max-w-[100vw] overflow-x-hidden bg-black">
+      <PlayerMessageListener
+        posterPath={poster_path || still_path}
+        seasonNumber={season}
+        episodeNumber={episode}
+        title={title}
+      />
+
+      <div className="w-full min-w-0 max-w-[100vw] overflow-hidden">
+        <div className="relative w-full max-w-full aspect-video">
+          <iframe
+            src={url}
+            title="Video player"
+            allowFullScreen
+            scrolling="no"
+            className="absolute inset-0 block h-full w-full min-w-0 max-w-full border-0"
+          />
+        </div>
+      </div>
     </div>
   );
 }
