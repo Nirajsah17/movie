@@ -11,7 +11,7 @@ export default async function WatchMovie({
 }: WatchPageProps) {
 
   const { id } = await params;
-  const { type, season, episode, poster_path, still_path, title} = await searchParams;
+  const { type, season = 1, episode = 1, poster_path, still_path, title} = await searchParams;
   const mediaType = type?.toLowerCase() === "tv" ? "tv" : "movie";
 
   const url =

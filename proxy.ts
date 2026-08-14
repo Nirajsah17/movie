@@ -3,6 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./app/api/auth/[...nextauth]/route";
 
 export async function proxy(request: NextRequest) {
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-next-pathname", request.nextUrl.pathname);
+
   const pathname = request.nextUrl.pathname;
   if (pathname === "/login" || pathname === "/movies") {
     return NextResponse.next();
