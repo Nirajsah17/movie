@@ -25,11 +25,13 @@ interface Episode {
 interface SeasonEpisodesProps {
   tvId: string;
   seasons: Season[];
+  title:string
 }
 
 export default function SeasonEpisodes({
   tvId,
   seasons,
+  title
 }: SeasonEpisodesProps) {
   
   const availableSeasons = seasons.filter(
@@ -146,6 +148,7 @@ export default function SeasonEpisodes({
                   key={episode.id}
                   tvId={tvId}
                   episode={episode}
+                  title={title}
                 />
               ))}
             </div>
@@ -159,9 +162,11 @@ export default function SeasonEpisodes({
 function EpisodeItem({
   tvId,
   episode,
+  title
 }: {
   tvId: string;
   episode: Episode;
+  title:string
 }) {
   const duration = episode.runtime
     ? `${episode.runtime}m`
@@ -169,7 +174,7 @@ function EpisodeItem({
 
   return (
     <Link
-      href={`/watch/${tvId}?type=tv&season=${episode.season_number}&episode=${episode.episode_number}&still_path=${episode.still_path}`}
+      href={`/watch/${tvId}?type=tv&season=${episode.season_number}&episode=${episode.episode_number}&still_path=${episode.still_path}&title=${title}`}
       className=" flex gap-4 p-4 transition-colors hover:bg-zinc-900 sm:p-5">
       <div className="flex w-8 shrink-0 items-center justify-center">
         <span className="text-lg font-semibold text-gray-500 transition-colors group-hover:text-white">

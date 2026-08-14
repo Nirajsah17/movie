@@ -22,43 +22,15 @@ export default function MovieCard({ movie }: { movie: TMDBMovie }) {
   const type = movie.media_type?.toLowerCase() === "tv" ? "TV" : "MOVIE";
 
   return (
-    <Link
-      href={`/movies/${movie.id}?type=${movie.media_type}`}
-      className="group relative block aspect-[2/3] w-full overflow-hidden rounded-lg bg-zinc-900 shadow-lg"
-    >
-      {/* Poster */}
-      <img
-        src={poster}
-        alt={`Official poster for ${movie.title}`}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
-
-      {/* Type Badge */}
+    <Link href={`/movies/${movie.id}?type=${movie.media_type}`} className="group relative block aspect-[2/3] w-full overflow-hidden rounded-lg bg-zinc-900 shadow-lg">
+      <img src={poster} alt={`Official poster for ${movie.title}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
       <div className="absolute right-3 top-3 z-20">
-        <span
-          className="
-            rounded-md bg-black/70 px-2.5 py-1
-            text-[10px] font-bold tracking-wider text-white
-            backdrop-blur-sm
-          "
-        >
+        <span className="rounded-md bg-black/70 px-2.5 py-1 text-[10px] font-bold tracking-wider text-white backdrop-blur-sm">
           {type}
         </span>
       </div>
-      <div
-        className="
-          absolute inset-0 z-10 flex flex-col justify-end
-          bg-gradient-to-t from-black via-black/85 to-black/20
-          p-4 opacity-0
-          transition-opacity duration-300
-          group-hover:opacity-100
-        "
-      >
-        <h3
-          className="mb-2 line-clamp-2 text-lg font-bold text-white"
-          title={movie.title}
-        >
+      <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black via-black/85 to-black/20 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <h3 className="mb-2 line-clamp-2 text-lg font-bold text-white" title={movie.title}>
           {movie.title}
         </h3>
         <div className="mb-2 flex items-center gap-3 text-xs text-gray-300">

@@ -6,6 +6,7 @@ export interface WatchHistory {
   mediaId: number;
   mediaType: MediaType;
   posterPath?: string | null;
+  title?: string | null;
 
   seasonNumber?: number;
   episodeNumber?: number;

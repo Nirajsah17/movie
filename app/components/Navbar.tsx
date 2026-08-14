@@ -5,6 +5,7 @@ import UserAvatar from "./Avatar";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import SearchBar from "./SearchBar";
 export default async function NavBar() {
   const session = await getServerSession(authOptions);
 
@@ -24,6 +25,7 @@ export default async function NavBar() {
             </p>
           </div>
         )}
+        <SearchBar/>
         <UserAvatar/>
       </div>
     </nav>

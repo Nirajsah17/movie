@@ -88,3 +88,19 @@ export async function fetchSeason(id:string, season:number) {
 
     return res.json();
 }
+
+export async function recomendedMoviesTv(id:string, type:string){
+  
+  if (!apiKey) {
+    throw new Error("TMDB_API_KEY is not configured");
+  }
+    const url = `https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=${apiKey}&language=en`
+    const res = await fetchWithRetry(url);
+    if (!res.ok) {
+      throw new Error(
+        `TMDB request failed: ${res.status} ${res.statusText}`
+      );
+    }
+
+    return res.json();
+}

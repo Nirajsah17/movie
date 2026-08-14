@@ -5,7 +5,7 @@ import { saveWatchProgress } from "@/app/lib/watchHistory";
 
 interface Props {
   posterPath?: string | null;
-
+  title: string | null;
   seasonNumber?: number;
   episodeNumber?: number;
 }
@@ -14,6 +14,7 @@ export default function PlayerMessageListener({
   posterPath,
   seasonNumber,
   episodeNumber,
+  title
 }: Props) {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -37,7 +38,7 @@ export default function PlayerMessageListener({
             mediaType: data.mediaType,
             posterPath,
             currentTime: data.currentTime,
-
+            title,
             seasonNumber,
             episodeNumber,
 
@@ -48,8 +49,9 @@ export default function PlayerMessageListener({
           await saveWatchProgress({
             mediaId: data.id,
             mediaType: data.mediaType,
-            posterPath,
             currentTime: data.currentTime,
+            title,
+            posterPath,
             progress: data.currentTime,
             duration: data.duration,
           });

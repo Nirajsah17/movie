@@ -7,12 +7,10 @@ import WatchHistoryCard from "./MovieHistoryCard";
 export default function WatchHistory() {
   const [history, setHistory] = useState<WatchHistory[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     async function loadHistory() {
       try {
         const data = await getContinueWatching();
-        console.log({data});
         setHistory(data);
       } catch (error) {
         console.error("Failed to load watch history:", error);
@@ -32,7 +30,7 @@ export default function WatchHistory() {
 
   if (loading) {
     return (
-      <section>
+      <section className="py-6 px-4">
         <h2 className="mb-4 text-xl font-bold text-white">
           Continue Watching
         </h2>
@@ -45,11 +43,21 @@ export default function WatchHistory() {
   }
 
   if (history.length === 0) {
-    return null;
+    return (
+      <section className="py-6 px-4">
+        <h2 className="mb-4 text-xl font-bold text-white">
+          Continue Watching
+        </h2>
+
+        <div className="text-sm text-gray-500">
+          Nothing here
+        </div>
+      </section>
+    )
   }
 
   return (
-    <section className="py-6">
+    <section className="py-6 px-4">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-bold text-white md:text-2xl">
           Continue Watching

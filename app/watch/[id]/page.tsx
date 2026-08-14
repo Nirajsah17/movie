@@ -11,8 +11,7 @@ export default async function WatchMovie({
 }: WatchPageProps) {
 
   const { id } = await params;
-  const { type, season, episode, poster_path, still_path} = await searchParams;
-
+  const { type, season, episode, poster_path, still_path, title} = await searchParams;
   const mediaType = type?.toLowerCase() === "tv" ? "tv" : "movie";
 
   const url =
@@ -22,7 +21,7 @@ export default async function WatchMovie({
 
   return (
     <div className="min-h-screen bg-black">
-      <PlayerMessageListener posterPath={poster_path||still_path} seasonNumber={season} episodeNumber={episode} />
+      <PlayerMessageListener posterPath={poster_path||still_path} seasonNumber={season} episodeNumber={episode} title={title} />
       <iframe src={url} width="100%" height="900" allowFullScreen className="w-full" title="Video player"/>
     </div>
   );
