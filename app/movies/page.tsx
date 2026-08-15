@@ -2,6 +2,9 @@ import MovieCard, { TMDBMovie } from "../components/MovieCard";
 import Carousel from "../components/Carousel";
 import { searchMovies, TredingWeek, homePageMovies } from "../actions/movies";
 import MovieRow from "../components/MovieRow";
+import WatchHistory from "../components/WatchHistory";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 interface PageProps {
   searchParams: Promise<{ query?: string }>;
@@ -9,6 +12,7 @@ interface PageProps {
 
 export default async function MoviesPage({ searchParams }: PageProps) {
   const { query } = await searchParams;
+  const session = await getServerSession(authOptions);
   const searchQuery = query?.trim() || "";
   let _movies: TMDBMovie[] = [];
   let trendingMoviesWeek = [];
@@ -40,35 +44,37 @@ export default async function MoviesPage({ searchParams }: PageProps) {
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
       {!searchQuery && trendingMoviesWeek.length && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
 
+      {session && <WatchHistory />}
+      
       {dayTrendingMovie && dayTrendingMovie.results.length && (
       <div>
-        <h1>Movie Trending Today</h1>
+        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Today</h1>
         <MovieRow movies={dayTrendingMovie.results}/>
       </div>    
       )}
 
       {weekTrendingMovie && weekTrendingMovie.results.length && (
       <div>
-        <h1>Movie Trending Week</h1>
+        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Week</h1>
         <MovieRow movies={weekTrendingMovie.results}/>
       </div>    
       )}
 
       {dayTrendingTv && dayTrendingTv.results.length && (
       <div>
-        <h1>TV Shows Trending Today</h1>
+        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">TV Shows Trending Today</h1>
         <MovieRow movies={dayTrendingTv.results}/>
       </div>    
       )}
 
       {weekTrendingTv && weekTrendingTv.results.length && (
       <div>
-        <h1>TV Shows Trending Week</h1>
+        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">TV Shows Trending Week</h1>
         <MovieRow movies={weekTrendingTv.results}/>
       </div>    
       )}
 
-      <h1>All Movies</h1>
+      <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">All Movies</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 mt-10">
         {_movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id}/>
