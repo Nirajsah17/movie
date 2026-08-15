@@ -5,7 +5,7 @@ import MovieRow from "../components/MovieRow";
 import WatchHistory from "../components/WatchHistory";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import HorizontalLoader from "../components/loader";
+import HorizontalLoader from "../components/Loader";
 
 interface PageProps {
   searchParams: Promise<{ query?: string }>;
@@ -17,42 +17,48 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   const searchQuery = query?.trim() || "";
   let _movies: TMDBMovie[] = [];
   let trendingMoviesWeek = [];
-
-  const {movie, tv} = await homePageMovies();
-  const [dayTrendingMovie, weekTrendingMovie] = movie;
-  const [dayTrendingTv, weekTrendingTv] = tv;
-  const tredingWeek = await TredingWeek();
-
-  trendingMoviesWeek = tredingWeek.results.map((item: TMDBMovie) => {
-    const isTV = item.media_type === "tv";
-    const title = isTV ? item.name : item.title;
-
-    const buttonHref = `/watch/${item.id}?type=${item.media_type}&poster_path=${item.poster_path}&still_path=${item.still_path}&title=${encodeURIComponent(title ?? "")}`;
-
-    return {
-      id: item.id,
-      src: `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
-      alt: title,
-      title: title,
-      description: item.overview,
-      buttonText: "Play",
-      buttonHref,
-      media_type: item.media_type,
-    };
-  });
+  let searchResults:TMDBMovie[] = [];
+  let dayTrendingMovie, weekTrendingMovie, dayTrendingTv, weekTrendingTv
 
   if(searchQuery){
     const searchedmovies = await searchMovies(searchQuery);
-    _movies = searchedmovies.results || [];
+    searchResults = searchedmovies.results || [];
   }else{
-    _movies = tredingWeek.results || [];
+    const tredingWeek = await TredingWeek();
+    trendingMoviesWeek = tredingWeek.results.map((item: TMDBMovie) => {
+      const isTV = item.media_type === "tv";
+      const title = isTV ? item.name : item.title;
+      const buttonHref = `/watch/${item.id}?type=${item.media_type}&poster_path=${item.poster_path}&still_path=${item.still_path}&title=${encodeURIComponent(title ?? "")}`;
+
+      return {
+        id: item.id,
+        src: `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
+        alt: title,
+        title: title,
+        description: item.overview,
+        buttonText: "Play",
+        buttonHref,
+        media_type: item.media_type,
+        poster_path: item.poster_path,
+        overview: item.overview,
+        backdrop_path: item.backdrop_path,
+        first_air_date: item.first_air_date,
+        release_date: item.release_date,
+        vote_average: item.vote_average
+      };
+    });
+    _movies = trendingMoviesWeek || [];
+    const {movie, tv} = await homePageMovies();
+    const [_dayTrendingMovie, _weekTrendingMovie] = movie;
+    const [_dayTrendingTv, _weekTrendingTv] = tv;
+    dayTrendingMovie = _dayTrendingMovie;
+    weekTrendingMovie = _weekTrendingMovie;
+    dayTrendingTv = _dayTrendingTv;
+    weekTrendingTv = _weekTrendingTv;
   }
 
   return (
     <main className="mx-auto p-6">
-      {searchQuery && !_movies.length && 
-        <HorizontalLoader/>
-      }
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
       {!searchQuery && trendingMoviesWeek.length && !searchQuery && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
 
@@ -86,14 +92,36 @@ export default async function MoviesPage({ searchParams }: PageProps) {
       </div>    
       )}
 
-      <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movies / TV Shows</h1>
-      <div className="mt-10 flex flex-wrap gap-6">
-        {_movies.map((movie) => (
-          <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
-            <MovieCard movie={movie} />
+      {!searchQuery && _movies.length && (
+        <>
+          <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movies / TV Shows</h1>
+          <div className="mt-10 flex flex-wrap gap-6">
+            {_movies.map((movie) => (
+              
+              <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
+                <pre>
+                  {/* {JSON.stringify(movie.)} */}
+                </pre>
+                <MovieCard movie={movie} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+
+      {searchQuery && (
+        <>
+          <div className="mt-10 flex flex-wrap gap-6">
+            {searchResults.map((movie:TMDBMovie) => (
+              <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
+                <MovieCard movie={movie} />
+              </div>
+            ))}
+          </div>
+
+        </>
+      )}
+
       {/* <div className="mt-10 flex flex-wrap justify-center gap-6">
         {_movies.map((movie) => (
           <div key={movie.id} className="w-[180px] shrink-0">

@@ -21,7 +21,6 @@ export default function MovieRow({ movies }: { movies: TMDBMovie[] }) {
     if(!element) return
 
     const checkScrollable = ()=>{
-      console.log(element?.scrollWidth, element?.clientWidth)
       if(element) setControl(element?.scrollWidth > element?.clientWidth)
     }
 
