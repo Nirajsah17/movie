@@ -1,4 +1,11 @@
 "use server";
+
+const CONSTANT = {
+  movie: ["day", "week"],
+  tv:["day", "week"],
+  all: ["day", "week"],
+}
+
 const apiKey = process.env.TMDB_API_KEY;
 import { fetchWithRetry } from "../lib/apiUtils";
 export async function getMovieId(id: string) {
@@ -103,4 +110,28 @@ export async function recomendedMoviesTv(id:string, type:string){
     }
 
     return res.json();
+}
+
+export async function homePageMovies() {
+  const moviePromises = CONSTANT.movie.map((time_window: string) =>
+    fetch(
+      `https://api.themoviedb.org/3/trending/movie/${time_window}?api_key=${apiKey}&language=en-US`
+    ).then((res) => res.json())
+  );
+
+  const tvPromises = CONSTANT.tv.map((time_window: string) =>
+    fetch(
+      `https://api.themoviedb.org/3/trending/tv/${time_window}?api_key=${apiKey}&language=en-US`
+    ).then((res) => res.json())
+  );
+
+  const [movieResults, tvResults] = await Promise.all([
+    Promise.all(moviePromises),
+    Promise.all(tvPromises),
+  ]);
+
+  return {
+    movie: movieResults,
+    tv: tvResults,
+  };
 }
