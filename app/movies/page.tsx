@@ -5,6 +5,7 @@ import MovieRow from "../components/MovieRow";
 import WatchHistory from "../components/WatchHistory";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import HorizontalLoader from "../components/loader";
 
 interface PageProps {
   searchParams: Promise<{ query?: string }>;
@@ -49,6 +50,9 @@ export default async function MoviesPage({ searchParams }: PageProps) {
 
   return (
     <main className="mx-auto p-6">
+      {searchQuery && !_movies.length && 
+        <HorizontalLoader/>
+      }
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
       {!searchQuery && trendingMoviesWeek.length && !searchQuery && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
 
