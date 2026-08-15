@@ -50,44 +50,58 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   return (
     <main className="mx-auto p-6">
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
-      {!searchQuery && trendingMoviesWeek.length && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
+      {!searchQuery && trendingMoviesWeek.length && !searchQuery && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
 
-      {session && <WatchHistory />}
+      {session && !searchQuery && <WatchHistory isHome={true}/>}
       
-      {dayTrendingMovie && dayTrendingMovie.results.length && (
+      {dayTrendingMovie && dayTrendingMovie.results.length && !searchQuery && (
       <div>
         <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Today</h1>
         <MovieRow movies={dayTrendingMovie.results}/>
       </div>    
       )}
 
-      {weekTrendingMovie && weekTrendingMovie.results.length && (
+      {weekTrendingMovie && weekTrendingMovie.results.length && !searchQuery && (
       <div>
         <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Week</h1>
         <MovieRow movies={weekTrendingMovie.results}/>
       </div>    
       )}
 
-      {dayTrendingTv && dayTrendingTv.results.length && (
+      {dayTrendingTv && dayTrendingTv.results.length && !searchQuery &&(
       <div>
         <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">TV Shows Trending Today</h1>
         <MovieRow movies={dayTrendingTv.results}/>
       </div>    
       )}
 
-      {weekTrendingTv && weekTrendingTv.results.length && (
+      {weekTrendingTv && weekTrendingTv.results.length && !searchQuery &&(
       <div>
         <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">TV Shows Trending Week</h1>
         <MovieRow movies={weekTrendingTv.results}/>
       </div>    
       )}
 
-      <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">All Movies</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 mt-10">
+      <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movies / TV Shows</h1>
+      <div className="mt-10 flex flex-wrap gap-6">
         {_movies.map((movie) => (
-          <MovieCard movie={movie} key={movie.id}/>
+          <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
+            <MovieCard movie={movie} />
+          </div>
         ))}
       </div>
+      {/* <div className="mt-10 flex flex-wrap justify-center gap-6">
+        {_movies.map((movie) => (
+          <div key={movie.id} className="w-[180px] shrink-0">
+            <MovieCard movie={movie} />
+          </div>
+        ))}
+      </div> */}
+      {/* <div className="mt-10 grid grid-cols-[repeat(auto-fill,180px)] justify-between gap-6">
+        {_movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div> */}
       {searchQuery && _movies.length === 0 && (
         <p className="text-center text-body mt-12">
           No cinematic matches found for "<span className="font-semibold">{searchQuery}</span>"

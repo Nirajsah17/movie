@@ -2,6 +2,6 @@ import WatchHistory from "../components/WatchHistory";
 
 export default function HistoryPage(){
   return(
-    <WatchHistory/>
+    <WatchHistory isHome={false}/>
   )
 }

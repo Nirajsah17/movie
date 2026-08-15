@@ -21,7 +21,7 @@ export default function PlayerMessageListener({
       if (typeof event.data !== "string") {
         return;
       }
-
+      
       try {
         const _data = JSON.parse(event.data);
         const data = _data.data;

@@ -40,6 +40,7 @@ const Carousel: React.FC<CarouselProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isVisible, setVisible] = useState(false);
 
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -152,11 +153,13 @@ const Carousel: React.FC<CarouselProps> = ({
       onMouseEnter={() => {
         if (pauseOnHover) {
           setIsPaused(true);
+          setVisible(true);
         }
       }}
       onMouseLeave={() => {
         if (pauseOnHover) {
           setIsPaused(false);
+          setVisible(false);
         }
       }}
       onTouchStart={handleTouchStart}
@@ -206,8 +209,8 @@ const Carousel: React.FC<CarouselProps> = ({
         })}
       </div>
 
-      {showControls && totalSlides > 1 && (
-        <button type="button" onClick={goToPrevious} aria-label="Previous slide" className=" group absolute left-0 top-0 z-30 flex h-full items-center px-4">
+      {isVisible && totalSlides > 1 && (
+        <button onClick={goToPrevious} aria-label="Previous slide" className=" group absolute left-0 top-0 z-30 flex h-full items-center px-4 cursor-pointer">
           <span className=" flex h-10 w-10 items-center justify-center bg-white/30 rounded-full transition group-hover:bg-[#e50914]">
             <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
@@ -216,8 +219,8 @@ const Carousel: React.FC<CarouselProps> = ({
         </button>
       )}
 
-      {showControls && totalSlides > 1 && (
-        <button type="button" onClick={goToNext} aria-label="Next slide" className=" group absolute right-0 top-0 z-30 flex h-full items-center px-4">
+      {isVisible && totalSlides > 1 && (
+        <button onClick={goToNext} aria-label="Next slide" className=" group absolute right-0 top-0 z-30 flex h-full items-center px-4 cursor-pointer">
           <span
             className="flex h-10 w-10 items-center justify-center bg-white/30 rounded-full transition group-hover:bg-[#e50914]">
             <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
