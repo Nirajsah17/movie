@@ -22,7 +22,6 @@ export default function WatchHistoryCard({
   const poster = item.posterPath ? `https://image.tmdb.org/t/p/w500${item.posterPath}` : "https://placehold.co/300x450?text=No+Poster";
   const watchUrl = item.mediaType === "movie" ? `/watch/${item.mediaId}?type=movie&poster_path=${poster}` : `/watch/${item.mediaId}?type=tv&season=${item.seasonNumber}&episode=${item.episodeNumber}&poster_path=${poster}`;
   const title = item.mediaType === "movie" ? item.title : `${item.title} - S${item.seasonNumber}-EP${item.episodeNumber}`;
-  console.log({title});
 
   const handleRemove = async () => {
     try {

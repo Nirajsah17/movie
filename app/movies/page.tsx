@@ -21,16 +21,24 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   const [dayTrendingMovie, weekTrendingMovie] = movie;
   const [dayTrendingTv, weekTrendingTv] = tv;
   const tredingWeek = await TredingWeek();
-  trendingMoviesWeek = tredingWeek.results.map((item: any) => ({
-    id: item.id,
-    src: `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
-    alt: item.title,
-    title: item.title || item.name,
-    description: item.overview,
-    buttonText: "Play",
-    buttonHref: `/watch/${item.id}`,
-    media_type: item.type
-  }));
+
+  trendingMoviesWeek = tredingWeek.results.map((item: TMDBMovie) => {
+    const isTV = item.media_type === "tv";
+    const title = isTV ? item.name : item.title;
+
+    const buttonHref = `/watch/${item.id}?type=${item.media_type}&poster_path=${item.poster_path}&still_path=${item.still_path}&title=${encodeURIComponent(title ?? "")}`;
+
+    return {
+      id: item.id,
+      src: `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
+      alt: title,
+      title: title,
+      description: item.overview,
+      buttonText: "Play",
+      buttonHref,
+      media_type: item.media_type,
+    };
+  });
 
   if(searchQuery){
     const searchedmovies = await searchMovies(searchQuery);

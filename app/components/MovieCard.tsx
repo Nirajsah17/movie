@@ -7,9 +7,12 @@ export interface TMDBMovie {
   release_date?: string;
   first_air_date?:string
   poster_path?: string | null;
+  still_path?: string;
   overview?: string;
   vote_average?: number;
   media_type: string;
+  type: 'tv' | 'movie';
+  backdrop_path?: string
 }
 
 export default function MovieCard({ movie }: { movie: TMDBMovie }) {
