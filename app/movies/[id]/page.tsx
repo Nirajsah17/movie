@@ -37,7 +37,6 @@ export default async function MovieDetailPage({
     if (!data) {
       notFound();
     }
-
     movie = {
       id: data.id,
       src: data.backdrop_path
@@ -53,12 +52,12 @@ export default async function MovieDetailPage({
       buttonText: "Play",
       media_type: mediaType,
       buttonHref: `/watch/${id}?type=${mediaType}&poster_path=${data.backdrop_path || data.poster_path || `https://placehold.co/1920x1080?text=No+Backdrop`}&title=${data.title || data.name}`,
-      trailer: data.trailer.key || ''
+      trailer: data?.trailer?.key || '',
+      external_id: data.imdb_id
     };
   }
 
-
-
+  const downloadLink = mediaType === "tv" ? `https://vidvault.ru/${mediaType}/${data.imdb_id}/1/1` : `https://vidvault.ru/${mediaType}/${data.imdb_id}`
 
   return (
     <div className="min-h-screen bg-black px-4">
@@ -70,6 +69,14 @@ export default async function MovieDetailPage({
         )
       }
 
+      <div className="w-full flex justify-end items-center py-2.5">
+        {!searchQuery && data.imdb_id && (
+          <a href={downloadLink} target="_blank" 
+             className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 my-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white/40">
+              Download
+          </a>
+        )}
+      </div>
       {!searchQuery && mediaType === "tv" && (
         <div className="mx-auto px-4 pb-16">
           <SeasonEpisodes

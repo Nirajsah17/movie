@@ -69,9 +69,8 @@ export async function movieDetaiById(id:string, type:string) {
     throw new Error("TMDB_API_KEY is not configured");
   }
   const _type = type.toLowerCase();
-  const url = _type === 'tv' ? `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en&append_to_response=videos` : `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en&append_to_response=videos`
+  const url = _type === 'tv' ? `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en&append_to_response=videos,external_ids` : `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en&append_to_response=videos,external_ids`;
   const res = await fetchWithRetry(url);
-
   
   if (!res.ok) {
     throw new Error(
@@ -80,12 +79,14 @@ export async function movieDetaiById(id:string, type:string) {
   }
   
   const result:any = await res.json();
+  console.log(result);
   const trailer = result.videos?.results?.find(
     (video: any) =>
       video.site === "YouTube" &&
       video.type === "Trailer" &&
       video.official
   );
+  result['imdb_id'] = result.external_ids.imdb_id;
   result['trailer'] = trailer;
   return result;
 }
