@@ -40,28 +40,15 @@ export default function SearchBar() {
 
   return (
     <>
-      <form
-        onSubmit={handleSearch}
-        className="flex w-full justify-end mr-4"
-      >
+      <form onSubmit={handleSearch} className="flex w-full justify-end mr-4">
         <label htmlFor="search" className="sr-only">
           Search movies
         </label>
 
         <div className="relative w-full max-w-lg">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-            <svg
-              className="h-5 w-5 text-zinc-400"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="m21 21-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
+            <svg className="h-5 w-5 text-zinc-400" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+              <path d="m21 21-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
 
@@ -72,13 +59,7 @@ export default function SearchBar() {
                 : "bg-zinc-700"
             }`}
           >
-            <input
-              type="search"
-              id="search"
-              value={value}
-              onChange={(e) => handleTyping(e.target.value)}
-              placeholder="Search movies, TV shows..."
-              required
+            <input type="search" id="search" value={value} onChange={(e) => handleTyping(e.target.value)} placeholder="Search movies, TV shows..." required
               className="h-12 w-full rounded-[10px] bg-zinc-900 pl-11 pr-24 text-sm text-white shadow-sm outline-none placeholder:text-zinc-500 focus:ring-2 focus:ring-red-500/20"
             />
           </div>

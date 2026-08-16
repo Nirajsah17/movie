@@ -56,6 +56,12 @@ export default async function MoviesPage({ searchParams }: PageProps) {
     dayTrendingTv = _dayTrendingTv;
     weekTrendingTv = _weekTrendingTv;
   }
+  {
+    dayTrendingMovie
+    weekTrendingMovie
+    dayTrendingTv
+    weekTrendingTv
+  }
 
   return (
     <main className="mx-auto p-6">
@@ -134,7 +140,7 @@ export default async function MoviesPage({ searchParams }: PageProps) {
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div> */}
-      {searchQuery && _movies.length === 0 && (
+      {searchQuery && searchResults.length === 0 && (
         <p className="text-center text-body mt-12">
           No cinematic matches found for "<span className="font-semibold">{searchQuery}</span>"
         </p>
