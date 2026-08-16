@@ -106,7 +106,7 @@ export default function WatchHistory({ isHome = false }: historyProps) {
           </button>
         )}
         <div ref={scrollRef} className="flex gap-4 overflow-x-auto scroll-smooth px-10 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0">
-          {history.map((item) => (
+          {history.reverse().map((item) => (
             <div key={item.key} className="w-[180px] shrink-0">
               <WatchHistoryCard item={item} onRemove={handleRemove}
               />
