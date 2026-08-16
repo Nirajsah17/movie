@@ -69,15 +69,25 @@ export async function movieDetaiById(id:string, type:string) {
     throw new Error("TMDB_API_KEY is not configured");
   }
   const _type = type.toLowerCase();
-  const url = _type === 'tv' ? `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en` : `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en`
+  const url = _type === 'tv' ? `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en&append_to_response=videos` : `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en&append_to_response=videos`
   const res = await fetchWithRetry(url);
+
+  
   if (!res.ok) {
     throw new Error(
       `TMDB request failed: ${res.status} ${res.statusText}`
     );
   }
-
-  return res.json();
+  
+  const result:any = await res.json();
+  const trailer = result.videos?.results?.find(
+    (video: any) =>
+      video.site === "YouTube" &&
+      video.type === "Trailer" &&
+      video.official
+  );
+  result['trailer'] = trailer;
+  return result;
 }
 
 

@@ -13,6 +13,7 @@ export interface TMDBMovie {
   media_type: string;
   type: 'tv' | 'movie';
   backdrop_path?: string
+  trailer?:{key:string}
 }
 
 export default function MovieCard({ movie }: { movie: TMDBMovie }) {

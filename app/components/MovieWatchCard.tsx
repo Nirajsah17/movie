@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export type MovieBannerProps = {
+  id:string;
   src: string;
   alt?: string;
 
@@ -14,15 +16,18 @@ export type MovieBannerProps = {
 
   className?: string;
   heightClassName?: string;
+  trailer?:string;
 };
 
 const MovieBanner: React.FC<MovieBannerProps> = ({
+  id,
   src,
   alt = "",
   title,
   description,
   buttonText,
   buttonHref,
+  trailer,
   className = "",
   heightClassName = "h-56 md:h-96",
 }) => {
@@ -44,15 +49,23 @@ const MovieBanner: React.FC<MovieBannerProps> = ({
             </p>
           )}
 
-          {buttonText && buttonHref && (
-            <a
-              href={buttonHref} className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white/40">
-              {buttonText}
-              <svg className="ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-6-6 6 6-6 6"/>
-              </svg>
-            </a>
-          )}
+          <div className="flex justify-between items-center">
+            {buttonText && buttonHref && (
+              <Link
+                href={buttonHref} className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white/40">
+                {buttonText}
+              </Link>
+            )}
+
+            {trailer && (
+              <Link
+                href={`/watch/${id}?key=${trailer}`} className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white/40">
+                Watch Trailer
+              </Link>
+            )}
+          </div>
+
+          
         </div>
       </div>
     </div>

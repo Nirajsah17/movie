@@ -39,6 +39,7 @@ export default async function MovieDetailPage({
     }
 
     movie = {
+      id: data.id,
       src: data.backdrop_path
         ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
         : "https://placehold.co/1920x1080?text=No+Backdrop",
@@ -52,6 +53,7 @@ export default async function MovieDetailPage({
       buttonText: "Play",
       media_type: mediaType,
       buttonHref: `/watch/${id}?type=${mediaType}&poster_path=${data.backdrop_path || data.poster_path || `https://placehold.co/1920x1080?text=No+Backdrop`}&title=${data.title || data.name}`,
+      trailer: data.trailer.key || ''
     };
   }
 
@@ -62,6 +64,7 @@ export default async function MovieDetailPage({
     <div className="min-h-screen bg-black px-4">
       {!searchQuery && (
         <MovieBanner
+          id={data.id}
           src={""} {...movie}
           heightClassName="h-[500px] md:h-[700px] lg:h-[800px]" />
         )

@@ -43,7 +43,8 @@ export default async function MoviesPage({ searchParams }: PageProps) {
         backdrop_path: item.backdrop_path,
         first_air_date: item.first_air_date,
         release_date: item.release_date,
-        vote_average: item.vote_average
+        vote_average: item.vote_average,
+        trailer: item.trailer?.key || ''
       };
     });
     _movies = trendingMoviesWeek || [];

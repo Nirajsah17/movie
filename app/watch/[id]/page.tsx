@@ -18,6 +18,8 @@ export default function WatchMovie() {
 
   const mediaType = type?.toLowerCase() === "tv" ? "tv" : "movie";
 
+  const trailer = searchParams.get("key");
+
   const url =
     mediaType === "tv"
       ? `https://www.vidking.net/embed/tv/${id}/${season}/${episode}?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true`
@@ -29,28 +31,62 @@ export default function WatchMovie() {
 
   return (
     <div className="w-full min-w-0 max-w-[100vw] overflow-x-hidden bg-black">
-      <PlayerMessageListener
-        posterPath={posterPath || stillPath || undefined}
-        seasonNumber={season}
-        episodeNumber={episode}
-        title={title}
-      />
+      {!trailer && (
+        <PlayerMessageListener
+          posterPath={posterPath || stillPath || undefined}
+          seasonNumber={season}
+          episodeNumber={episode}
+          title={title}
+        />
+      )}
 
       <div className="w-full min-w-0 max-w-[100vw] overflow-hidden">
         <div className="group relative aspect-video w-full max-w-full">
-          <iframe
-            src={url}
-            title="Video player"
-            allowFullScreen
-            scrolling="no"
-            className="absolute inset-0 block h-full w-full min-w-0 max-w-full border-0"
-          />
-          <button onClick={handleBack} aria-label="Go back" className="absolute left-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-              <path strokeLinecap="round" d="M15 19l-7-7 7-7"
+          {!trailer && (
+            <>
+              <iframe
+                src={url}
+                title="Video player"
+                allowFullScreen
+                scrolling="no"
+                className="absolute inset-0 block h-full w-full min-w-0 max-w-full border-0"
               />
-            </svg>
-          </button>
+
+              <button
+                onClick={handleBack}
+                aria-label="Go back"
+                className="absolute left-4 top-4 z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black/70 text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path strokeLinecap="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+            </>
+          )}
+
+          {trailer && (
+            <>
+              <div className="fixed inset-0 z-[9999] flex h-dvh w-screen items-center justify-center bg-black">
+                <iframe
+                  src={`https://www.youtube.com/embed/${trailer}?autoplay=1&rel=0`}
+                  title="Movie trailer"
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  className="h-full w-full border-0"
+                />
+              </div>
+
+              <button
+                onClick={handleBack}
+                aria-label="Go back"
+                className="fixed left-4 top-4 z-[10000] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black/70 text-white shadow-lg backdrop-blur-sm"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                  <path strokeLinecap="round"d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
