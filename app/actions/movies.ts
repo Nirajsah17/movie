@@ -1,8 +1,8 @@
 "use server";
 
 const CONSTANT = {
-  movie: ["day", "week"],
-  tv:["day", "week"],
+  movie: ["week"],
+  tv:["week"],
   all: ["day", "week"],
 }
 

@@ -5,7 +5,6 @@ import MovieRow from "../components/MovieRow";
 import WatchHistory from "../components/WatchHistory";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import HorizontalLoader from "../components/Loader";
 
 interface PageProps {
   searchParams: Promise<{ query?: string }>;
@@ -18,7 +17,7 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   let _movies: TMDBMovie[] = [];
   let trendingMoviesWeek = [];
   let searchResults:TMDBMovie[] = [];
-  let dayTrendingMovie, weekTrendingMovie, dayTrendingTv, weekTrendingTv
+  let  weekTrendingMovie, weekTrendingTv
 
   if(searchQuery){
     const searchedmovies = await searchMovies(searchQuery);
@@ -49,18 +48,10 @@ export default async function MoviesPage({ searchParams }: PageProps) {
     });
     _movies = trendingMoviesWeek || [];
     const {movie, tv} = await homePageMovies();
-    const [_dayTrendingMovie, _weekTrendingMovie] = movie;
-    const [_dayTrendingTv, _weekTrendingTv] = tv;
-    dayTrendingMovie = _dayTrendingMovie;
+    const [_weekTrendingMovie] = movie;
+    const [_weekTrendingTv] = tv;
     weekTrendingMovie = _weekTrendingMovie;
-    dayTrendingTv = _dayTrendingTv;
     weekTrendingTv = _weekTrendingTv;
-  }
-  {
-    dayTrendingMovie
-    weekTrendingMovie
-    dayTrendingTv
-    weekTrendingTv
   }
 
   return (
@@ -69,25 +60,11 @@ export default async function MoviesPage({ searchParams }: PageProps) {
       {!searchQuery && trendingMoviesWeek.length && !searchQuery && <Carousel items={trendingMoviesWeek} autoPlay interval={5000} heightClassName="h-[500px] md:h-[700px] lg:h-[800px]"/>}
 
       {session && !searchQuery && <WatchHistory isHome={true}/>}
-      
-      {dayTrendingMovie && dayTrendingMovie.results.length && !searchQuery && (
-      <div>
-        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Today</h1>
-        <MovieRow movies={dayTrendingMovie.results}/>
-      </div>    
-      )}
 
       {weekTrendingMovie && weekTrendingMovie.results.length && !searchQuery && (
       <div>
         <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">Movie Trending Week</h1>
         <MovieRow movies={weekTrendingMovie.results}/>
-      </div>    
-      )}
-
-      {dayTrendingTv && dayTrendingTv.results.length && !searchQuery &&(
-      <div>
-        <h1 className="mb-4 text-xl font-bold text-white px-4 py-6">TV Shows Trending Today</h1>
-        <MovieRow movies={dayTrendingTv.results}/>
       </div>    
       )}
 
@@ -106,7 +83,6 @@ export default async function MoviesPage({ searchParams }: PageProps) {
               
               <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
                 <pre>
-                  {/* {JSON.stringify(movie.)} */}
                 </pre>
                 <MovieCard movie={movie} />
               </div>
