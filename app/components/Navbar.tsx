@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
 
 import NetflixLogo from "../../public/netflix.svg";
@@ -8,14 +7,14 @@ import UserAvatar from "./Avatar";
 import SearchBar from "./SearchBar";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
-export default async function NavBar() {
-  const [session, headersList] = await Promise.all([
-    getServerSession(authOptions),
-    headers(),
-  ]);
-  const pathname = headersList.get("x-next-pathname");
-  const showSearch = pathname === "/watch";
+interface SearchProps{
+  isSearch: boolean
+}
 
+export default async function NavBar({ isSearch }:SearchProps) {
+  const [session] = await Promise.all([
+    getServerSession(authOptions),
+  ]);
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/95 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-2 px-3 sm:gap-4 sm:px-6">
@@ -33,7 +32,7 @@ export default async function NavBar() {
           </div>
         )}
           <div className="min-w-0 flex-1">
-            <SearchBar />
+            {isSearch && <SearchBar />}
           </div>
         <div className="ml-auto shrink-0">
           <UserAvatar />

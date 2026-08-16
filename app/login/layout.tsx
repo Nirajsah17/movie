@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import NavBar from "../components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Movies / TV",
-  description: "List of movies and shows",
+  title: "Login",
+  description: "Login",
 };
 
-export default function MovietLayout({ children }: LayoutProps<"/">) {
+export default function LoginLayout({ children }: LayoutProps<"/">) {
   return (
     <div >
-      <NavBar isSearch={true}/>
+      <NavBar isSearch={false}/>
       {children}
     </div>
   );

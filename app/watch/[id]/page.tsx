@@ -1,17 +1,21 @@
+"use client";
+
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import PlayerMessageListener from "@/app/components/PlayerMesageListener";
 
-interface WatchPageProps {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ type: string, season: number, episode:number, poster_path:string, title:string, still_path:string }>;
-}
+export default function WatchMovie() {
+  const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
 
-export default async function WatchMovie({
-  params,
-  searchParams,
-}: WatchPageProps) {
+  const type = searchParams.get("type");
+  const season = Number(searchParams.get("season")) || 1;
+  const episode = Number(searchParams.get("episode")) || 1;
 
-  const { id } = await params;
-  const { type, season = 1, episode = 1, poster_path, still_path, title} = await searchParams;
+  const posterPath = searchParams.get("poster_path");
+  const stillPath = searchParams.get("still_path");
+  const title = searchParams.get("title");
+
   const mediaType = type?.toLowerCase() === "tv" ? "tv" : "movie";
 
   const url =
@@ -19,17 +23,21 @@ export default async function WatchMovie({
       ? `https://www.vidking.net/embed/tv/${id}/${season}/${episode}?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true`
       : `https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`;
 
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
-    <div className="min-h-screen w-full min-w-0 max-w-[100vw] overflow-x-hidden bg-black">
+    <div className="w-full min-w-0 max-w-[100vw] overflow-x-hidden bg-black">
       <PlayerMessageListener
-        posterPath={poster_path || still_path}
+        posterPath={posterPath || stillPath || undefined}
         seasonNumber={season}
         episodeNumber={episode}
         title={title}
       />
 
       <div className="w-full min-w-0 max-w-[100vw] overflow-hidden">
-        <div className="relative w-full max-w-full aspect-video">
+        <div className="group relative aspect-video w-full max-w-full">
           <iframe
             src={url}
             title="Video player"
@@ -37,6 +45,12 @@ export default async function WatchMovie({
             scrolling="no"
             className="absolute inset-0 block h-full w-full min-w-0 max-w-full border-0"
           />
+          <button onClick={handleBack} aria-label="Go back" className="absolute left-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+              <path strokeLinecap="round" d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
