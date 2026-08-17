@@ -175,13 +175,15 @@ function EpisodeItem({
   return (
     <Link
       href={`/watch/${tvId}?type=tv&season=${episode.season_number}&episode=${episode.episode_number}&still_path=${episode.still_path}&title=${title}`}
-      className=" flex gap-4 p-4 transition-colors hover:bg-zinc-900 sm:p-5">
-      <div className="flex w-8 shrink-0 items-center justify-center">
-        <span className="text-lg font-semibold text-gray-500 transition-colors group-hover:text-white">
+      className="group flex h-[72px] min-w-0 items-center gap-2 overflow-hidden p-2 transition-colors hover:bg-zinc-900 sm:h-[80px] sm:gap-3 sm:p-3"
+    >
+      <div className="flex w-6 shrink-0 items-center justify-center">
+        <span className="text-sm font-semibold text-gray-500 transition-colors group-hover:text-white">
           {episode.episode_number}
         </span>
       </div>
-      <div className="relative hidden h-20 w-36 shrink-0 overflow-hidden rounded-md bg-zinc-800 sm:block">
+
+      <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded bg-zinc-800 sm:h-16 sm:w-28">
         {episode.still_path ? (
           <img
             src={`https://image.tmdb.org/t/p/w300${episode.still_path}`}
@@ -190,39 +192,61 @@ function EpisodeItem({
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-xs text-gray-500">
+          <div className="flex h-full items-center justify-center text-[10px] text-gray-500">
             No Image
           </div>
         )}
+
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-xs text-black">
             ▶
           </div>
         </div>
       </div>
 
-      <div className="min-w-0 flex-1">
-        <div className="mb-1 flex items-center gap-2">
-          <h3 className="truncate font-semibold text-white">
-            {episode.name}
-          </h3>
+      <div
+        className="min-w-0 flex-1 overflow-x-auto overflow-y-hidden"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        <div className="flex min-w-max items-center gap-2">
+          <div className="min-w-[220px]">
+            <div className="mb-0.5 flex items-center gap-2">
+              <h3 className="whitespace-nowrap font-semibold leading-tight text-white">
+                {episode.name}
+              </h3>
 
-          {duration && (
-            <span className="shrink-0 text-xs text-gray-500">
-              {duration}
-            </span>
-          )}
+              {duration && (
+                <span className="shrink-0 text-[10px] text-gray-500 sm:text-xs">
+                  {duration}
+                </span>
+              )}
+            </div>
+
+            <p className="max-w-[500px] truncate text-xs leading-snug text-gray-400 sm:text-sm">
+              {episode.overview ||
+                "No episode description available."}
+            </p>
+          </div>
+
+          <div className="flex shrink-0 items-center pr-2 text-gray-600 transition-colors group-hover:text-white">
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="m9 5 7 7-7-7"
+              />
+            </svg>
+          </div>
         </div>
-
-        <p className="line-clamp-2 text-sm leading-relaxed text-gray-400">
-          {episode.overview ||
-            "No episode description available."}
-        </p>
-      </div>
-      <div className="hidden items-center text-gray-600 transition-colors group-hover:text-white sm:flex">
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 5 7 7-7-7"/>
-        </svg>
       </div>
     </Link>
   );

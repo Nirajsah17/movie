@@ -79,7 +79,6 @@ export async function movieDetaiById(id:string, type:string) {
   }
   
   const result:any = await res.json();
-  console.log(result);
   const trailer = result.videos?.results?.find(
     (video: any) =>
       video.site === "YouTube" &&

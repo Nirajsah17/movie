@@ -26,19 +26,34 @@ export default function MovieCard({ movie }: { movie: TMDBMovie }) {
   const type = movie.media_type?.toLowerCase() === "tv" ? "TV" : "MOVIE";
 
   return (
-    <Link href={`/movies/${movie.id}?type=${movie.media_type}`} className="group relative block aspect-[2/3] w-full overflow-hidden rounded-lg bg-zinc-900 shadow-lg">
-      <img src={poster} alt={`Official poster for ${type === "TV" ? movie.name : movie.title}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
-      <div className="absolute right-3 top-3 z-20">
-        <span className="rounded-md bg-black/70 px-2.5 py-1 text-[10px] font-bold tracking-wider text-white backdrop-blur-sm">
+    <Link
+      href={`/movies/${movie.id}?type=${movie.media_type}`}
+      className="group relative block aspect-[2/3] w-full overflow-hidden rounded-md bg-zinc-900 shadow-md sm:rounded-lg sm:shadow-lg"
+    >
+      <img
+        src={poster}
+        alt={`Official poster for ${type === "TV" ? movie.name : movie.title}`}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+
+      <div className="absolute right-1.5 top-1.5 z-20 sm:right-3 sm:top-3">
+        <span className="rounded bg-black/70 px-1.5 py-0.5 text-[8px] font-bold tracking-wider text-white backdrop-blur-sm sm:rounded-md sm:px-2.5 sm:py-1 sm:text-[10px]">
           {type}
         </span>
       </div>
-      <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black via-black/85 to-black/20 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <h3 className="mb-2 line-clamp-2 text-lg font-bold text-white" title={type === "TV" ? movie.name : movie.title}>
+
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/80 to-transparent p-2 pt-10 sm:p-4 sm:pt-16">
+        <h3
+          className="line-clamp-2 text-xs font-bold leading-tight text-white sm:mb-2 sm:text-lg"
+          title={type === "TV" ? movie.name : movie.title}
+        >
           {type === "TV" ? movie.name : movie.title}
         </h3>
-        <div className="mb-2 flex items-center gap-3 text-xs text-gray-300">
+
+        <div className="mt-1 flex items-center gap-1.5 text-[9px] text-gray-300 sm:mb-2 sm:mt-0 sm:gap-3 sm:text-xs">
           <span>{releaseYear}</span>
+
           {movie.vote_average !== undefined &&
             movie.vote_average > 0 && (
               <span className="font-semibold text-yellow-400">
@@ -46,10 +61,9 @@ export default function MovieCard({ movie }: { movie: TMDBMovie }) {
               </span>
             )}
         </div>
-        <p className="line-clamp-3 text-xs leading-relaxed text-gray-300">
-          {movie.overview || "No plot summary available."}
-        </p>
       </div>
+
+      <div className="absolute inset-0 z-[5] hidden bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block" />
     </Link>
   );
 }

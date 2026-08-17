@@ -69,11 +69,15 @@ export default async function MovieDetailPage({
         )
       }
 
-      <div className="w-full flex justify-end items-center py-2.5">
+      <div className="flex w-full items-center justify-end py-2 sm:py-2.5">
         {!searchQuery && data.imdb_id && (
-          <a href={downloadLink} target="_blank" 
-             className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 my-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-white/40">
-              Download
+          <a
+            href={downloadLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#E50914] px-3.5 py-2 text-xs font-semibold text-white shadow-md shadow-black/20 transition-colors hover:bg-[#B20710] focus:outline-none focus:ring-4 focus:ring-[#E50914]/40 sm:min-h-10 sm:rounded-lg sm:px-5 sm:py-2.5 sm:text-sm"
+          >
+            Download
           </a>
         )}
       </div>
@@ -88,20 +92,22 @@ export default async function MovieDetailPage({
       )}
 
       {!searchQuery && (
-        <div className="py-2 mb-2 text-xl font-bold md:text-2xl">
-          <h1>Recomendedations</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 mt-10">
+        <>
+          <h1 className="text-xl font-bold text-white px-8 py-6">Recomended</h1>
+          <div className="flex flex-wrap gap-6 px-8">
             {recommededMovies.length && recommededMovies.map((movie:TMDBMovie) => (
-              <MovieCard movie={movie} key={movie.id}/>
+              <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
+                <MovieCard movie={movie} key={movie.id}/>
+              </div>
             ))}
           </div>
-        </div>
+        </>
       )}
 
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
       {searchQuery && (
         <>
-          <div className="mt-10 flex flex-wrap gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {searchResults.map((movie:TMDBMovie) => (
               <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
                 <MovieCard movie={movie} />

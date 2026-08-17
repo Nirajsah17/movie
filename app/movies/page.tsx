@@ -83,8 +83,6 @@ export default async function MoviesPage({ searchParams }: PageProps) {
             {_movies.map((movie) => (
               
               <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
-                <pre>
-                </pre>
                 <MovieCard movie={movie} />
               </div>
             ))}
