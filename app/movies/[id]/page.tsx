@@ -107,7 +107,7 @@ export default async function MovieDetailPage({
       {searchQuery && <h2>Results for your query : '{<span className="font-semibold">{searchQuery}</span>}'</h2>}
       {searchQuery && (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="flex flex-wrap gap-6">
             {searchResults.map((movie:TMDBMovie) => (
               <div key={movie.id} className="w-[calc(50%-12px)] sm:w-[180px]">
                 <MovieCard movie={movie} />
