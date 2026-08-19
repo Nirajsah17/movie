@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function HistoryLayout({ children }: LayoutProps<"/">) {
   return (
     <div >
-      <NavBar isSearch={false}/>
+      <NavBar isSearch={true}/>
       {children}
     </div>
   );

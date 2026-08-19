@@ -14,6 +14,7 @@ export interface TMDBMovie {
   type: 'tv' | 'movie';
   backdrop_path?: string
   trailer?:{key:string}
+  src:string 
 }
 
 export default function MovieCard({ movie }: { movie: TMDBMovie }) {
@@ -27,7 +28,7 @@ export default function MovieCard({ movie }: { movie: TMDBMovie }) {
 
   return (
     <Link
-      href={`/movies/${movie.id}?type=${movie.media_type}`}
+      href={`/movies/${movie.id}/${movie.media_type}`}
       className="group relative block aspect-[2/3] w-full overflow-hidden rounded-md bg-zinc-900 shadow-md sm:rounded-lg sm:shadow-lg"
     >
       <img

@@ -9,6 +9,7 @@ export default function LoginPage() {
 
   const callbackUrl =
     searchParams.get("callbackUrl") || "/";
+  console.log(callbackUrl);
 
   const handleGoogleLogin = async () => {
     await signIn("google", {

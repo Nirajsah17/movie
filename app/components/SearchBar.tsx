@@ -41,13 +41,13 @@ export default function SearchBar() {
   return (
     <form
       onSubmit={handleSearch}
-      className="flex w-full justify-end"
+      className="flex w-full justify-center"
     >
       <label htmlFor="search" className="sr-only">
         Search movies
       </label>
 
-      <div className="relative w-full max-w-lg">
+      <div className="relative w-full max-w-[340px] sm:max-w-[500px] md:max-w-[650px] lg:max-w-[800px] xl:max-w-[900px]">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-3 sm:pl-4">
           <svg
             className="h-4 w-4 text-zinc-400 sm:h-5 sm:w-5"

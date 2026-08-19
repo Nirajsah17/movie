@@ -34,9 +34,7 @@ export async function searchMovies(searchQuery:string) {
     throw new Error("TMDB_API_KEY is not configured");
   }
   const url = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&language=en&query=${encodeURIComponent(searchQuery)}`
-  const res = await fetchWithRetry(url, 
-    { cache: "no-store" }
-    );
+  const res = await fetchWithRetry(url);
   if (!res.ok) {
     throw new Error(
       `TMDB request failed: ${res.status} ${res.statusText}`
@@ -52,9 +50,9 @@ export async function TredingWeek() {
     throw new Error("TMDB_API_KEY is not configured");
   }
   const url = `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`;
-  const res = await fetchWithRetry(url, 
-    { cache: "no-store" }
-    );
+  const res = await fetchWithRetry(url,{
+    next: {revalidate: 3600}
+  });
   if (!res.ok) {
     throw new Error(
       `TMDB request failed: ${res.status} ${res.statusText}`
@@ -124,15 +122,37 @@ export async function recomendedMoviesTv(id:string, type:string){
 
 export async function homePageMovies() {
   const moviePromises = CONSTANT.movie.map((time_window: string) =>
-    fetch(
-      `https://api.themoviedb.org/3/trending/movie/${time_window}?api_key=${apiKey}&language=en-US`
-    ).then((res) => res.json())
+    fetchWithRetry(
+      `https://api.themoviedb.org/3/trending/movie/${time_window}?api_key=${apiKey}&language=en-US`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
+    ).then((res) => {
+      if (!res.ok) {
+        throw new Error(`TMDB request failed: ${res.status}`);
+      }
+
+      return res.json();
+    })
   );
 
   const tvPromises = CONSTANT.tv.map((time_window: string) =>
-    fetch(
-      `https://api.themoviedb.org/3/trending/tv/${time_window}?api_key=${apiKey}&language=en-US`
-    ).then((res) => res.json())
+    fetchWithRetry(
+      `https://api.themoviedb.org/3/trending/tv/${time_window}?api_key=${apiKey}&language=en-US`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
+    ).then((res) => {
+      if (!res.ok) {
+        throw new Error(`TMDB request failed: ${res.status}`);
+      }
+
+      return res.json();
+    })
   );
 
   const [movieResults, tvResults] = await Promise.all([

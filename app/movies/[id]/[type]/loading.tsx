@@ -1,4 +1,4 @@
-import HorizontalLoader from "../../components/Loader";
+import HorizontalLoader from "../../../components/Loader";
 
 export default function Loading() {
   return <HorizontalLoader />;
