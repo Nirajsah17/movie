@@ -1,1 +1,1 @@
-@AGENTS.md
+https://console.neon.tech/
