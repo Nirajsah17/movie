@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import NetflixLogo from "../../public/netflix.svg";
 import UserAvatar from "./Avatar";
-import SearchBar from "./SearchBar";
 
 interface SearchProps{
   isSearch: boolean

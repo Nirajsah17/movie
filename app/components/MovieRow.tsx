@@ -19,9 +19,10 @@ export default function MovieRow({ movies }: { movies: TMDBMovie[] }) {
   useEffect(()=>{
     const element = scrollRef.current;
     if(!element) return
-
+    element.scroll(50, 0)
     const checkScrollable = ()=>{
-      if(element) setControl(element?.scrollWidth > element?.clientWidth)
+      // if(element) setControl(element?.scrollWidth > element?.clientWidth)
+
     }
 
     const observer = new ResizeObserver(checkScrollable);
@@ -59,7 +60,7 @@ export default function MovieRow({ movies }: { movies: TMDBMovie[] }) {
 
     <div
       ref={scrollRef}
-      className="flex gap-2 overflow-x-auto scroll-smooth px-10 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar]:w-0 sm:gap-4 sm:px-12"
+      className="flex gap-2 overflow-x-auto scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar]:w-0"
     >
       {movies.map((movie) => (
         <div
